@@ -9,7 +9,7 @@ const init = (port) => {
   try {
     server.listen(port, () => {});
     ConnectToDDBB();
-    console.log('Connected to database and server Up, listening at port ',port ,process.pid);
+    console.log('Connected to database and server Up, listening at port ',port ,'--> PID : ',process.pid);
   }
   catch (err) {
     // console.log(err)

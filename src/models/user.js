@@ -13,6 +13,7 @@ const UserSchema = new Schema({
         admin: {type:Boolean, default:false}
     }, {
     versionKey: false,
+    timestamps:true,
 }
 )
 

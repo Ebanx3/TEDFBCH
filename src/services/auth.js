@@ -1,6 +1,8 @@
 import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { UserModel } from '../models/user';
+import { CartModel } from '../models/cart';
+import { notifyNewUserByEmail } from '../services/notifications';
 
 const strategyOptions = {
     usernameField: 'email',
@@ -25,10 +27,11 @@ const login = async (req, username, password, done) => {
 
 const signup = async (req, username, password, done) => {
     try {
-        console.log(req)
         const { email, password, name, adress, age, phone } = req.body;
         const newUser = await UserModel.create({ email :email, password:password, name:name, adress:adress, age:age , phone:phone });
-        //Enviar correo avisando que se creo usuario
+
+        await CartModel.create({userId: newUser._id.toString(), })
+        notifyNewUserByEmail(newUser);
         return done(null, newUser);
     }
     catch (err) {
