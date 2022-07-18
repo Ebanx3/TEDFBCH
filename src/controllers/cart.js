@@ -1,6 +1,8 @@
 import { CartModel } from '../models/cart';
 import { categoryCollectionName } from '../models/categories';
 import { notifyNewOrderUsingWhatsApp } from '../services/notifications';
+import { UserModel } from '../models/user';
+import { ProductModel } from '../models/products';
 
 export const getCart = async (req,res) => {
     if(!req.user){
@@ -75,8 +77,21 @@ export const createOrder = async (req,res) => {
     }
 
     const cart = await CartModel.find({userId:req.user._id});
-    notifyNewOrderUsingWhatsApp(cart[0]);
-    const cartUpdated = await CartModel.findByIdAndUpdate(cart[0]._id.toString(), {products: []}, {new:true});
+    console.log(cart[0])
+    const user = await UserModel.findById(cart[0].userId.toString());
+    const data = {
+        nombre: user.name,
+        email: user.email,
+        productos : []
+    }
+    cart[0].products.map(async (prod) => {
+        const product = await ProductModel.findById(prod.productId.toString());
+        data.productos.push(`Producto: ${product.name} - Precio:${product.price} * Cantidad: ${prod.amount}`)
+    })
+    console.log(data)
+
+    notifyNewOrderUsingWhatsApp(data);
+    await CartModel.findByIdAndUpdate(cart[0]._id.toString(), {products: []}, {new:true});
     res.status(200).json({
         msg:'Order created',
         Products: cart[0].products
