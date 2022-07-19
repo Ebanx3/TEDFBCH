@@ -35,5 +35,7 @@ Tercer entrega desafío final curso backend de coderHouse, e-commerce, con react
 
 ## User
 >/api/user/login (post) --> Body(JSON) --> {email, password}
+
 >/api/user/signup (post) --> Body(JSON) --> {email, password, name, adress , phone, age}
+
 >/api/user/setAvatar (post) Input:file from the frontend
