@@ -2,7 +2,7 @@ import { CartModel } from '../models/cart';
 import { categoryCollectionName } from '../models/categories';
 import { notifyNewOrderUsingWhatsApp } from '../services/notifications';
 import { UserModel } from '../models/user';
-import { ProductModel } from '../models/products';
+import { ProductModel } from '../models/products/products.model';
 
 export const getCart = async (req,res) => {
     if(!req.user){

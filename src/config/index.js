@@ -12,4 +12,5 @@ export default {
     TWILIO_TOKEN: process.env.TWILIO_TOKEN,
     TWILIO_WSP_CELLPHONE: process.env.TWILIO_WSP_NUMBER,
     ADMIN_PHONE: process.env.ADMIN_PHONE,
+    PERSISTENCE: process.env.PERSISTENCE,
 };

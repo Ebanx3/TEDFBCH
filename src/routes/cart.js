@@ -1,10 +1,11 @@
 import { Router } from "express";
 import { addProduct, createOrder, deleteProduct, getCart } from "../controllers/cart";
+import  Handler  from 'express-async-handler';
 
 const router = Router();
 
-router.get('/', getCart);
-router.post('/add',addProduct);
-router.post('/remove', deleteProduct);
-router.post('/order', createOrder)
+router.get('/', Handler(getCart));
+router.post('/add',Handler(addProduct));
+router.post('/remove', Handler(deleteProduct));
+router.post('/order', Handler(createOrder))
 export default router;

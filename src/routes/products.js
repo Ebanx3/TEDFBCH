@@ -1,12 +1,13 @@
 import { Router } from "express";
-import { getAllProducts, getProductById, createProduct, updateProduct, deleteProduct } from '../controllers/products' 
+import { getAllProducts, getProductById, createProduct, updateProduct, deleteProduct, checkBodyProduct } from '../models/products/products.DAO' 
+import  Handler  from 'express-async-handler';
 
 const router = Router();
 
-router.get('/', getAllProducts);
-router.get('/:id', getProductById);
-router.post('/', createProduct);
-router.put('/:id', updateProduct);
-router.delete('/:id', deleteProduct);
+router.get('/', Handler(getAllProducts));
+router.get('/:id', Handler(getProductById));
+router.post('/', checkBodyProduct ,Handler(createProduct));
+router.put('/:id', Handler(updateProduct));
+router.delete('/:id', Handler(deleteProduct));
 
 export default router;

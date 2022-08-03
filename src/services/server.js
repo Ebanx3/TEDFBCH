@@ -6,6 +6,7 @@ import { loginFunc, signUpFunc } from './auth';
 import compression from 'compression';
 import config from '../config';
 import cors from 'cors';
+import helmet from 'helmet'
 
 const app = express();
 
@@ -31,8 +32,8 @@ passport.use('signup', signUpFunc);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use(cors())
-
+app.use(cors());
+app.use(helmet());
 app.use(express.static('public'));
 
 app.use('/api',compression(),mainRouter);

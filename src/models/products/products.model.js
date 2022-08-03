@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { categoryCollectionName } from "./categories";
+import { categoryCollectionName } from "../categories";
 
 export const productsCollectionName = 'product';
 

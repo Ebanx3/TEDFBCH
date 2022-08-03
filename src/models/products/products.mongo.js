@@ -1,30 +1,13 @@
-import { ProductModel } from "../models/products";
-import { CategoryModel } from "../models/categories";
+import { ProductModel } from "./products.model";
+import { CategoryModel } from "../categories";
+import productsDTO from "./products.DTO";
 
-export const checkBodyProduct = async (req,res,next) => {
-    const {name,description,stock,price,categoryId} = req.body;
-    if(!name || !description || !stock || !price || !categoryId){
-        return res.status(400).json({
-            msg:'missing Body fields'
-        });
-    }
-
-    const category = await CategoryModel.findById(categoryId);
-
-    if(!category){
-        return res.status(400).json({
-            msg:'Category does not exists',
-        });
-    }
-
-    next()
-};
-
-export const getAllProducts = async (req,res) => {
+const getAllProducts = async (req,res) => {
     try{
         const items = await ProductModel.find();
+        const itemsDTO = items.map(item => productsDTO(item))
         res.json({
-            data:items,
+            data:itemsDTO,
         });
     }
     catch(err){
@@ -35,7 +18,7 @@ export const getAllProducts = async (req,res) => {
     }
 };
 
-export const getProductById = async (req,res) => {
+const getProductById = async (req,res) => {
     try {
         const { id } = req.params;
         const product = await ProductModel.findById(id);
@@ -46,7 +29,7 @@ export const getProductById = async (req,res) => {
         }
 
         res.json({
-            data:product,
+            data:productsDTO(product),
         });
     }
     catch(err){
@@ -57,7 +40,7 @@ export const getProductById = async (req,res) => {
     }
 };
 
-export const createProduct = async (req,res) => {
+const createProduct = async (req,res) => {
     try{
         const {name,description,price,stock,categoryId} = req.body;
 
@@ -65,7 +48,7 @@ export const createProduct = async (req,res) => {
 
         res.json({
             msg:'Product created',
-            data: newProduct
+            data: productsDTO(newProduct)
         });
     }
     catch(err){
@@ -76,7 +59,7 @@ export const createProduct = async (req,res) => {
     }
 };
 
-export const updateProduct = async (req,res) => {
+const updateProduct = async (req,res) => {
     try{
         const { id } = req.params;
 
@@ -92,7 +75,7 @@ export const updateProduct = async (req,res) => {
 
         res.json({
             msg: ' Product updated',
-            data: productUpdated,
+            data: productsDTO(productUpdated),
         });
     }
     catch(err){
@@ -103,7 +86,7 @@ export const updateProduct = async (req,res) => {
     }
 };
 
-export const deleteProduct = async (req,res) =>{
+const deleteProduct = async (req,res) =>{
     try{
         const { id } = req.params;
         await ProductModel.findByIdAndDelete(id);
@@ -118,3 +101,13 @@ export const deleteProduct = async (req,res) =>{
         });
     }
 };
+
+const productsMongooseController = {
+    getAllProducts,
+    getProductById,
+    createProduct,
+    updateProduct,
+    deleteProduct
+};
+
+export default productsMongooseController;
